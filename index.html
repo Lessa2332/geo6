@@ -11,6 +11,7 @@
             --primary: #6366f1; --euro: #60a5fa; --mong: #fbbf24; 
             --negro: #fb7185; --mixed: #a78bfa; --all: #34d399;
             --bg: #0f172a; --glass: rgba(255, 255, 255, 0.05);
+            --light-bg: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -32,240 +33,222 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px; margin: 20px 0;
-        }
-
-        .info-card {
-            background: var(--glass); border-radius: 20px; padding: 15px;
-            border: 1px solid rgba(255,255,255,0.1); text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .img-box {
-            width: 100%; height: 180px; border-radius: 15px;
-            overflow: hidden; margin-bottom: 12px; background: #1e293b;
-        }
-
+        /* Енциклопедія */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin: 20px 0; }
+        .info-card { background: var(--glass); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: center; backdrop-filter: blur(10px); }
+        .img-box { width: 100%; height: 160px; border-radius: 15px; overflow: hidden; margin-bottom: 12px; background: #1e293b; }
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
-
         .feature-list { text-align: left; font-size: 0.85rem; line-height: 1.5; }
-        .feature-list p { margin: 5px 0; opacity: 0.9; }
 
-        .pool {
-            background: var(--glass); border: 2px dashed rgba(255,255,255,0.2);
-            border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap;
-            gap: 10px; min-height: 100px; margin-bottom: 20px; justify-content: center;
-        }
+        /* Гео-паспорт (Дослідження) */
+        .passport-box { background: var(--glass); border-radius: 25px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .progress-mini { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        #p-bar { height: 100%; background: var(--primary); width: 0%; transition: 0.3s; }
+        .sub-step { display: none; }
+        .sub-step.active { display: block; }
+        input[type="text"] { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white; margin-bottom: 15px; text-align: center; font-size: 1rem; }
 
-        .word {
-            background: white; color: #1e293b; padding: 12px 18px;
-            border-radius: 12px; font-weight: 700; cursor: grab;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 0.9rem;
-        }
+        /* Хмарочос */
+        .pool { background: var(--glass); border: 2px dashed rgba(255,255,255,0.2); border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap; gap: 10px; min-height: 80px; margin-bottom: 20px; justify-content: center; }
+        .word { background: white; color: #1e293b; padding: 10px 16px; border-radius: 12px; font-weight: 700; cursor: grab; font-size: 0.9rem; }
+        .floor { background: var(--glass); border-radius: 15px; padding: 35px 10px 10px; min-height: 80px; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; position: relative; border-left: 6px solid #444; }
+        .floor::before { content: attr(data-label); position: absolute; top: 10px; left: 10px; font-size: 0.7rem; font-weight: 800; opacity: 0.6; }
+        .correct { background: var(--all) !important; color: #000 !important; }
 
-        .floor {
-            background: var(--glass); border-radius: 15px; padding: 35px 10px 10px;
-            min-height: 80px; display: flex; flex-wrap: wrap; gap: 8px;
-            margin-bottom: 15px; position: relative; border-left: 6px solid #444;
-        }
+        /* Квіз */
+        .quiz-box { background: var(--glass); padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .opt { width: 100%; padding: 16px; margin: 8px 0; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-weight: 600; cursor: pointer; }
 
-        .floor::before {
-            content: attr(data-label); position: absolute; top: 10px; left: 10px;
-            font-size: 0.7rem; font-weight: 800; opacity: 0.6; text-transform: uppercase;
-        }
-
-        .correct { background: #10b981 !important; color: white !important; transform: scale(1.05); }
-        .wrong { background: #ef4444 !important; color: white !important; }
-
-        .quiz-box {
-            background: var(--glass); padding: 25px; border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.1); text-align: center;
-        }
-
-        .opt {
-            width: 100%; padding: 16px; margin: 8px 0; border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
-            color: white; font-weight: 600; cursor: pointer; font-size: 1rem; transition: 0.2s;
-        }
-
-        .btn {
-            background: var(--primary); color: white; border: none; padding: 20px;
-            border-radius: 18px; width: 100%; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; margin-top: 20px; box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        textarea {
-            width: 100%; height: 100px; border-radius: 15px; padding: 15px;
-            background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass);
-            margin-top: 10px; font-family: inherit;
-        }
-
-        @media (max-width: 600px) {
-            .info-grid { grid-template-columns: 1fr; }
-            .img-box { height: 200px; }
-        }
+        /* Кнопки */
+        .btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; font-size: 1.1rem; cursor: pointer; margin-top: 15px; }
+        .btn-opt { display: block; width: 100%; padding: 14px; margin-bottom: 8px; background: var(--light-bg); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; text-align: left; cursor: pointer; }
+        
+        @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <header style="padding: 15px; text-align: center; background: var(--glass); backdrop-filter: blur(10px);">
-    <h1 style="margin:0; font-family:'Montserrat'; letter-spacing: 1px; font-size: 1.4rem;">HUMANITY CORE v2.6</h1>
+    <h1 style="margin:0; font-family:'Montserrat'; letter-spacing: 1px; font-size: 1.2rem;">HUMANITY CORE v2.6</h1>
 </header>
 
 <div class="container">
     
-    <!-- Етап 1: Енциклопедія -->
+    <!-- ЕТАП 1: ЕНЦИКЛОПЕДІЯ (Дошка) -->
     <div id="s1" class="screen active">
+        <h2 style="text-align:center">🔬 Енциклопедія рас</h2>
         <div class="info-grid">
             <div class="info-card" style="border-top: 4px solid var(--euro)">
-                <div class="img-box"><img src="foto/1.png" alt="Європеоїдна"></div>
+                <div class="img-box"><img src="foto/1.png" alt="Є"></div>
                 <h3>Європеоїдна</h3>
-                <div class="feature-list">
-                    <p>• Світла шкіра (вітамін D)</p>
-                    <p>• Вузький ніс (зігрів повітря)</p>
-                    <p>• М'яке хвилясте волосся</p>
-                </div>
+                <div class="feature-list"><p>• Світла шкіра</p><p>• Вузький ніс</p><p>• М'яке волосся</p></div>
             </div>
-
             <div class="info-card" style="border-top: 4px solid var(--mong)">
-                <div class="img-box"><img src="foto/2.png" alt="Монголоїдна"></div>
+                <div class="img-box"><img src="foto/2.png" alt="М"></div>
                 <h3>Монголоїдна</h3>
-                <div class="feature-list">
-                    <p>• Епікантус (захист очей)</p>
-                    <p>• Пласке обличчя, високі вилиці</p>
-                    <p>• Жорстке темне волосся</p>
-                </div>
+                <div class="feature-list"><p>• Епікантус</p><p>• Пласке обличчя</p><p>• Жорстке волосся</p></div>
             </div>
-
             <div class="info-card" style="border-top: 4px solid var(--negro)">
-                <div class="img-box"><img src="foto/3.png" alt="Негроїдна"></div>
+                <div class="img-box"><img src="foto/3.png" alt="Н"></div>
                 <h3>Негроїдна</h3>
-                <div class="feature-list">
-                    <p>• Темна шкіра (меланін)</p>
-                    <p>• Кучеряве волосся (терморегуляція)</p>
-                    <p>• Широкий ніс, повні губи</p>
-                </div>
+                <div class="feature-list"><p>• Темна шкіра</p><p>• Кучеряве волосся</p><p>• Широкі ніздрі</p></div>
             </div>
-
             <div class="info-card" style="border-top: 4px solid var(--mixed)">
-                <div class="img-box"><img src="foto/4.png" alt="Змішана"></div>
+                <div class="img-box"><img src="foto/4.png" alt="З"></div>
                 <h3>Змішана</h3>
-                <div class="feature-list">
-                    <p>• <b>Метиси:</b> Європа + Америка</p>
-                    <p>• <b>Мулати:</b> Європа + Африка</p>
-                    <p>• <b>Самбо:</b> Африка + Америка</p>
-                </div>
+                <div class="feature-list"><p>• Метиси, Мулати, Самбо</p></div>
             </div>
         </div>
-        <button class="btn" onclick="nav('s2')">ДО ПРАКТИКИ 🏗️</button>
+        <button class="btn" onclick="nav('s2')">ПЕРЕЙТИ ДО САМОАНАЛІЗУ 🤳</button>
     </div>
 
-    <!-- Етап 2: Хмарочос -->
+    <!-- ЕТАП 2: ГЕО-ПАСПОРТ (Для телефонів учнів) -->
     <div id="s2" class="screen">
-        <div class="pool sortable-list" id="wordPool">
+        <div class="passport-box">
+            <div class="progress-mini"><div id="p-bar"></div></div>
+            
+            <div id="step1" class="sub-step active">
+                <h2>🔬 Твій Гео-Паспорт</h2>
+                <input type="text" id="uName" placeholder="Введи своє ім'я">
+                <button class="btn" onclick="nextP(1)">ПОЧАТИ ДОСЛІДЖЕННЯ</button>
+            </div>
+
+            <div id="step2" class="sub-step">
+                <h3>🎨 Твій колір шкіри:</h3>
+                <button class="btn-opt" onclick="logA('Світла (вітамін D ☀️)', 2)">⚪ Світла / Рожева</button>
+                <button class="btn-opt" onclick="logA('Темна (захист 🛡️)', 2)">🟤 Темна / Коричнева</button>
+                <button class="btn-opt" onclick="logA('Смаглява (універсальна 🌤️)', 2)">🟡 Смаглява</button>
+            </div>
+
+            <div id="step3" class="sub-step">
+                <h3>👁️ Форма твоїх очей:</h3>
+                <button class="btn-opt" onclick="logA('З епікантусом (захист 🌪️)', 3)">🛡️ Зі складочкою</button>
+                <button class="btn-opt" onclick="logA('Широко відкриті 🌍', 3)">🌍 Відкриті очі</button>
+            </div>
+
+            <div id="step4" class="sub-step">
+                <h3>👩‍🦱 Твоє волосся:</h3>
+                <button class="btn-opt" onclick="logA('Кучеряве (подушка ☁️)', 4)">🌀 Кучеряве</button>
+                <button class="btn-opt" onclick="logA('М\'яке/Хвилясте 🌊', 4)">🌊 М'яке</button>
+                <button class="btn-opt" onclick="logA('Пряме/Жорстке 📏', 4)">📏 Пряме</button>
+            </div>
+
+            <div id="p-res" class="sub-step" style="text-align:left">
+                <h3 id="resName" style="color:var(--all)"></h3>
+                <div id="resList" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; font-size:0.9rem"></div>
+                <p style="font-size:0.8rem; margin-top:10px; opacity:0.7">✍️ <b>Завдання:</b> Запиши ці дані у свій паперовий пазл!</p>
+                <button class="btn" style="background:var(--all); color:#000" onclick="nav('s3')">Я ЗАПИСАВ, ДО ХМАРОЧОСА! 🏗️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ЕТАП 3: ХМАРОЧОС (Спільно на дошці) -->
+    <div id="s3" class="screen">
+        <h2 style="text-align:center">🏗️ Хмарочос ознак</h2>
+        <div class="pool" id="wordPool">
             <div class="word" data-t="mong">Епікантус</div>
             <div class="word" data-t="euro">Вузький ніс</div>
             <div class="word" data-t="negro">Меланін</div>
-            <div class="word" data-t="all">Творчість</div>
             <div class="word" data-t="mong">Пласке обличчя</div>
-            <div class="word" data-t="all">Мрії</div>
             <div class="word" data-t="euro">М'яке волосся</div>
             <div class="word" data-t="negro">Широкі ніздрі</div>
-            <div class="word" data-t="all">Мова</div>
+            <div class="word" data-t="all">Мрії</div>
+            <div class="word" data-t="all">Творчість</div>
         </div>
-        <div class="floor" id="euro" data-label="Європеоїдна" style="border-color: var(--euro)"></div>
-        <div class="floor" id="mong" data-label="Монголоїдна" style="border-color: var(--mong)"></div>
-        <div class="floor" id="negro" data-label="Негроїдна" style="border-color: var(--negro)"></div>
-        <div class="floor" id="all" data-label="Спільне для всіх" style="border-color: var(--all)"></div>
-        <button id="toQuiz" class="btn" style="display:none" onclick="nav('s3')">КВІЗ (12 ПИТАНЬ) ⚡</button>
+        <div class="floor" id="euro" data-label="Європеоїдна"></div>
+        <div class="floor" id="mong" data-label="Монголоїдна"></div>
+        <div class="floor" id="negro" data-label="Негроїдна"></div>
+        <div class="floor" id="all" data-label="Спільне для всіх" style="border-color:var(--all)"></div>
+        <button id="qBtn" class="btn" style="display:none" onclick="nav('s4')">ЧАС КВІЗУ! ⚡</button>
     </div>
 
-    <!-- Етап 3: Квіз -->
-    <div id="s3" class="screen">
+    <!-- ЕТАП 4: КВІЗ -->
+    <div id="s4" class="screen">
         <div class="quiz-box">
-            <div id="qNum" style="font-weight: 800; color: var(--primary); margin-bottom: 10px;">1 / 12</div>
-            <h2 id="qText" style="font-size: 1.2rem; margin-bottom: 20px;">...</h2>
+            <div id="qNum" style="color:var(--primary); font-weight:800"></div>
+            <h2 id="qText"></h2>
             <div id="qOpts"></div>
         </div>
     </div>
 
-    <!-- Етап 4: Рефлексія -->
-    <div id="s4" class="screen">
-        <div class="quiz-box" style="text-align: left;">
-            <h2 style="text-align: center; color: var(--all);">Урок завершено!</h2>
-            <p>Ти розкрив таємницю людських рас. Ми різні зовні, але єдині всередині.</p>
-            <p><b>Що було найцікавішим?</b></p>
-            <textarea id="refText" placeholder="Напиши свою думку..."></textarea>
-            <div style="display:flex; justify-content: space-around; font-size: 2rem; margin: 20px 0;">
-                <span>🤩</span><span>🤔</span><span>😎</span>
-            </div>
-            <button class="btn" onclick="location.reload()">ПОВТОРИТИ</button>
+    <!-- ЕТАП 5: РЕФЛЕКСІЯ -->
+    <div id="s5" class="screen">
+        <div class="quiz-box">
+            <h2 style="color:var(--all)">🧩 Ми — частини цілого!</h2>
+            <p>Ваші пазли тепер складають одне полотно. Ми різні, але ми — одна сім'я Homo Sapiens.</p>
+            <textarea id="ref" placeholder="Твої думки про сьогоднішню подорож..."></textarea>
+            <button class="btn" onclick="location.reload()">ЗАВЕРШИТИ УРОК 🌍</button>
         </div>
     </div>
+
 </div>
 
 <script>
+    let pStep = 1;
+    let userAdaptions = [];
+
     function nav(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(id === 's3') startQuiz();
+        if(id === 's4') startQuiz();
         window.scrollTo(0,0);
     }
 
-    // Ініціалізація перетягування
-    new Sortable(document.getElementById('wordPool'), { group: 'r', animation: 150 });
+    // Логіка Гео-Паспорта
+    function nextP(s) {
+        document.getElementById('step'+s).classList.remove('active');
+        pStep++;
+        document.getElementById('step'+pStep).classList.add('active');
+        document.getElementById('p-bar').style.width = (pStep/4 * 100) + '%';
+    }
+
+    function logA(text, s) {
+        userAdaptions.push(text);
+        if(pStep < 4) {
+            nextP(s);
+        } else {
+            showPassport();
+        }
+    }
+
+    function showPassport() {
+        document.querySelectorAll('.sub-step').forEach(s => s.classList.remove('active'));
+        document.getElementById('p-res').classList.add('active');
+        document.getElementById('resName').innerText = "Паспорт: " + (document.getElementById('uName').value || "Дослідник");
+        document.getElementById('resList').innerHTML = userAdaptions.map(a => `<p>✅ ${a}</p>`).join('');
+    }
+
+    // Хмарочос
+    new Sortable(wordPool, { group: 'r', animation: 150 });
     ['euro', 'mong', 'negro', 'all'].forEach(id => {
         new Sortable(document.getElementById(id), {
             group: 'r', animation: 150,
             onAdd: (e) => {
-                const correct = (e.item.dataset.t === e.to.id);
-                e.item.classList.toggle('correct', correct);
-                e.item.classList.toggle('wrong', !correct);
-                checkProgress();
+                if(e.item.dataset.t === e.to.id) {
+                    e.item.classList.add('correct');
+                    if(document.querySelectorAll('.correct').length === 8) document.getElementById('qBtn').style.display='block';
+                }
             }
         });
     });
 
-    function checkProgress() {
-        if(document.querySelectorAll('.correct').length === 9) {
-            document.getElementById('toQuiz').style.display='block';
-        }
-    }
-
+    // Квіз
     const questions = [
-        {q: "Навіщо нам меланін?", a: ["Для краси", "Захист від сонця", "Щоб не мерзнути"], c: 1},
-        {q: "Епікантус — це складка на...", a: ["Вусі", "Повіці ока", "Носі"], c: 1},
-        {q: "Яка раса має вузький ніс для зігріву повітря?", a: ["Негроїдна", "Монголоїдна", "Європеоїдна"], c: 2},
-        {q: "Чи всі люди на Землі належать до одного виду?", a: ["Так, Homo Sapiens", "Ні, до різних", "Тільки ті, хто схожі"], c: 0},
-        {q: "Що захищає голову негроїдів від перегріву?", a: ["Шапка", "Кучеряве волосся", "Темні очі"], c: 1},
-        {q: "Метиси — це змішання...", a: ["Європеоїдів і індіанців", "Всіх рас", "Тільки європейців"], c: 0},
-        {q: "Яка ознака монголоїдів захищає від пилу?", a: ["Широкі ніздрі", "Епікантус", "М'яке волосся"], c: 1},
-        {q: "Расові ознаки виникли через...", a: ["Випадок", "Адаптацію до клімату", "Харчування"], c: 1},
-        {q: "Спільне для всіх людей — це...", a: ["Колір шкіри", "Мрії та почуття", "Ріст"], c: 1},
-        {q: "Мулати — це нащадки...", a: ["Європеоїдів та негроїдів", "Монголоїдів", "Самбо"], c: 0},
-        {q: "Де найвищий рівень ультрафіолету?", a: ["На полюсах", "На екваторі", "В Україні"], c: 1},
-        {q: "Знання про раси допомагає нам...", a: ["Сперечатися", "Жити в єдності", "Бути окремо"], c: 1}
+        {q: "Яка ознака допомагає негроїдам не перегріватися?", a: ["Світлі очі", "Кучеряве волосся", "Вузький ніс"], c: 1},
+        {q: "Епікантус — це пристосування до...", a: ["Холоду", "Вітру та пилу", "Сонця"], c: 1},
+        {q: "Як називають нащадків європеоїдів та негроїдів?", a: ["Метиси", "Мулати", "Самбо"], c: 1}
     ];
-
-    let currentQ = 0;
+    let curQ = 0;
     function startQuiz() {
-        const q = questions[currentQ];
-        document.getElementById('qNum').innerText = `${currentQ + 1} / 12`;
+        let q = questions[curQ];
+        document.getElementById('qNum').innerText = `Питання ${curQ + 1} з ${questions.length}`;
         document.getElementById('qText').innerText = q.q;
-        const div = document.getElementById('qOpts'); div.innerHTML = '';
+        let div = document.getElementById('qOpts'); div.innerHTML = '';
         q.a.forEach((opt, i) => {
-            const b = document.createElement('button'); b.className = 'opt'; b.innerText = opt;
+            let b = document.createElement('button'); b.className = 'btn-opt'; b.innerText = opt;
             b.onclick = () => {
-                if(i === q.c) {
-                    b.style.background = '#10b981';
-                    setTimeout(() => { currentQ++; currentQ < 12 ? startQuiz() : nav('s4'); }, 600);
-                } else { 
-                    b.style.background = '#ef4444';
-                    if(navigator.vibrate) navigator.vibrate(50);
-                }
+                if(i === q.c) { curQ++; curQ < questions.length ? startQuiz() : nav('s5'); }
+                else { b.style.background = '#ef4444'; }
             };
             div.appendChild(b);
         });
