@@ -27,13 +27,11 @@
             flex-grow: 1; display: flex; flex-direction: column;
         }
 
-        /* Адаптивні екрани */
         .screen { display: none; animation: fadeIn 0.4s ease; width: 100%; }
         .active { display: flex; flex-direction: column; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Картки Енциклопедії */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -41,22 +39,21 @@
         }
 
         .info-card {
-            background: var(--glass); border-radius: 20px; padding: 12px;
+            background: var(--glass); border-radius: 20px; padding: 15px;
             border: 1px solid rgba(255,255,255,0.1); text-align: center;
             backdrop-filter: blur(10px);
         }
 
         .img-box {
-            width: 100%; height: 160px; border-radius: 15px;
+            width: 100%; height: 180px; border-radius: 15px;
             overflow: hidden; margin-bottom: 12px; background: #1e293b;
         }
 
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .info-card h3 { font-size: 1.1rem; margin: 10px 0; font-family: 'Montserrat', sans-serif; }
-        .info-card p { font-size: 0.85rem; line-height: 1.4; opacity: 0.9; }
+        .feature-list { text-align: left; font-size: 0.85rem; line-height: 1.5; }
+        .feature-list p { margin: 5px 0; opacity: 0.9; }
 
-        /* Хмарочос - Адаптація для сенсорних дошок */
         .pool {
             background: var(--glass); border: 2px dashed rgba(255,255,255,0.2);
             border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap;
@@ -64,26 +61,25 @@
         }
 
         .word {
-            background: white; color: #1e293b; padding: 14px 20px;
+            background: white; color: #1e293b; padding: 12px 18px;
             border-radius: 12px; font-weight: 700; cursor: grab;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 0.9rem;
         }
 
         .floor {
             background: var(--glass); border-radius: 15px; padding: 35px 10px 10px;
-            min-height: 70px; display: flex; flex-wrap: wrap; gap: 8px;
-            margin-bottom: 10px; position: relative; border-left: 6px solid #444;
+            min-height: 80px; display: flex; flex-wrap: wrap; gap: 8px;
+            margin-bottom: 15px; position: relative; border-left: 6px solid #444;
         }
 
         .floor::before {
             content: attr(data-label); position: absolute; top: 10px; left: 10px;
-            font-size: 0.65rem; font-weight: 800; opacity: 0.5;
+            font-size: 0.7rem; font-weight: 800; opacity: 0.6; text-transform: uppercase;
         }
 
-        .correct { background: #10b981 !important; color: white !important; scale: 1.02; }
+        .correct { background: #10b981 !important; color: white !important; transform: scale(1.05); }
         .wrong { background: #ef4444 !important; color: white !important; }
 
-        /* Квіз */
         .quiz-box {
             background: var(--glass); padding: 25px; border-radius: 25px;
             border: 1px solid rgba(255,255,255,0.1); text-align: center;
@@ -92,25 +88,24 @@
         .opt {
             width: 100%; padding: 16px; margin: 8px 0; border-radius: 15px;
             border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
-            color: white; font-weight: 600; cursor: pointer; font-size: 1rem;
+            color: white; font-weight: 600; cursor: pointer; font-size: 1rem; transition: 0.2s;
         }
 
-        /* Кнопки навігації */
         .btn {
             background: var(--primary); color: white; border: none; padding: 20px;
             border-radius: 18px; width: 100%; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; margin-top: auto; box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
+            cursor: pointer; margin-top: 20px; box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
         }
 
-        /* Мобільна адаптація */
+        textarea {
+            width: 100%; height: 100px; border-radius: 15px; padding: 15px;
+            background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass);
+            margin-top: 10px; font-family: inherit;
+        }
+
         @media (max-width: 600px) {
-            h1 { font-size: 1.2rem; }
-            .info-grid { grid-template-columns: 1fr 1fr; }
-            .info-card { padding: 8px; }
-            .img-box { height: 110px; }
-            .word { padding: 10px 14px; font-size: 0.8rem; }
-            .info-card h3 { font-size: 0.9rem; }
-            .info-card p { display: none; } /* Ховаємо опис на малих екранах у галереї */
+            .info-grid { grid-template-columns: 1fr; }
+            .img-box { height: 200px; }
         }
     </style>
 </head>
@@ -122,43 +117,39 @@
 
 <div class="container">
     
-    <!-- Етап 1: Енциклопедія (ОНОВЛЕНО З ОПИСАМИ) -->
+    <!-- Етап 1: Енциклопедія -->
     <div id="s1" class="screen active">
         <div class="info-grid">
-            <!-- 1. Європеоїдна -->
             <div class="info-card" style="border-top: 4px solid var(--euro)">
                 <div class="img-box"><img src="foto/1.png" alt="Європеоїдна"></div>
                 <h3>Європеоїдна</h3>
                 <div class="feature-list">
                     <p>• Світла шкіра (вітамін D)</p>
                     <p>• Вузький ніс (зігрів повітря)</p>
-                    <p>• М'яке пряме або хвилясте волосся</p>
+                    <p>• М'яке хвилясте волосся</p>
                 </div>
             </div>
 
-            <!-- 2. Монголоїдна -->
             <div class="info-card" style="border-top: 4px solid var(--mong)">
                 <div class="img-box"><img src="foto/2.png" alt="Монголоїдна"></div>
                 <h3>Монголоїдна</h3>
                 <div class="feature-list">
-                    <p>• Епікантус (захист очей від пилу)</p>
-                    <p>• Пласке обличчя та високі вилиці</p>
+                    <p>• Епікантус (захист очей)</p>
+                    <p>• Пласке обличчя, високі вилиці</p>
                     <p>• Жорстке темне волосся</p>
                 </div>
             </div>
 
-            <!-- 3. Негроїдна -->
             <div class="info-card" style="border-top: 4px solid var(--negro)">
                 <div class="img-box"><img src="foto/3.png" alt="Негроїдна"></div>
                 <h3>Негроїдна</h3>
                 <div class="feature-list">
-                    <p>• Темна шкіра (захист меланіном)</p>
-                    <p>• Кучеряве волосся (захист від спеки)</p>
-                    <p>• Широкий ніс та повні губи</p>
+                    <p>• Темна шкіра (меланін)</p>
+                    <p>• Кучеряве волосся (терморегуляція)</p>
+                    <p>• Широкий ніс, повні губи</p>
                 </div>
             </div>
 
-            <!-- 4. Змішана -->
             <div class="info-card" style="border-top: 4px solid var(--mixed)">
                 <div class="img-box"><img src="foto/4.png" alt="Змішана"></div>
                 <h3>Змішана</h3>
@@ -171,10 +162,6 @@
         </div>
         <button class="btn" onclick="nav('s2')">ДО ПРАКТИКИ 🏗️</button>
     </div>
-    
-    <!-- Далі йдуть інші екрани (s2, s3, s4) без змін -->
-</div>
-
 
     <!-- Етап 2: Хмарочос -->
     <div id="s2" class="screen">
@@ -200,7 +187,7 @@
     <div id="s3" class="screen">
         <div class="quiz-box">
             <div id="qNum" style="font-weight: 800; color: var(--primary); margin-bottom: 10px;">1 / 12</div>
-            <h2 id="qText" style="font-size: 1.2rem;">...</h2>
+            <h2 id="qText" style="font-size: 1.2rem; margin-bottom: 20px;">...</h2>
             <div id="qOpts"></div>
         </div>
     </div>
@@ -212,7 +199,7 @@
             <p>Ти розкрив таємницю людських рас. Ми різні зовні, але єдині всередині.</p>
             <p><b>Що було найцікавішим?</b></p>
             <textarea id="refText" placeholder="Напиши свою думку..."></textarea>
-            <div style="display:flex; justify-content: space-around; font-size: 2rem; margin: 15px 0;">
+            <div style="display:flex; justify-content: space-around; font-size: 2rem; margin: 20px 0;">
                 <span>🤩</span><span>🤔</span><span>😎</span>
             </div>
             <button class="btn" onclick="location.reload()">ПОВТОРИТИ</button>
@@ -228,21 +215,26 @@
         window.scrollTo(0,0);
     }
 
-    // Sortable
-    new Sortable(wordPool, { group: 'r', animation: 150 });
-    [euro, mong, negro, all].forEach(el => {
-        new Sortable(el, {
+    // Ініціалізація перетягування
+    new Sortable(document.getElementById('wordPool'), { group: 'r', animation: 150 });
+    ['euro', 'mong', 'negro', 'all'].forEach(id => {
+        new Sortable(document.getElementById(id), {
             group: 'r', animation: 150,
             onAdd: (e) => {
-                const correct = (e.item.dataset.t === e.to.id) || (e.item.dataset.t === 'all' && e.to.id === 'all');
+                const correct = (e.item.dataset.t === e.to.id);
                 e.item.classList.toggle('correct', correct);
                 e.item.classList.toggle('wrong', !correct);
-                if(document.querySelectorAll('.correct').length === 9) document.getElementById('toQuiz').style.display='block';
+                checkProgress();
             }
         });
     });
 
-    // Quiz Questions (12)
+    function checkProgress() {
+        if(document.querySelectorAll('.correct').length === 9) {
+            document.getElementById('toQuiz').style.display='block';
+        }
+    }
+
     const questions = [
         {q: "Навіщо нам меланін?", a: ["Для краси", "Захист від сонця", "Щоб не мерзнути"], c: 1},
         {q: "Епікантус — це складка на...", a: ["Вусі", "Повіці ока", "Носі"], c: 1},
@@ -269,8 +261,11 @@
             b.onclick = () => {
                 if(i === q.c) {
                     b.style.background = '#10b981';
-                    setTimeout(() => { currentQ++; currentQ < 12 ? startQuiz() : nav('s4'); }, 800);
-                } else { b.style.background = '#ef4444'; if(navigator.vibrate) navigator.vibrate(100); }
+                    setTimeout(() => { currentQ++; currentQ < 12 ? startQuiz() : nav('s4'); }, 600);
+                } else { 
+                    b.style.background = '#ef4444';
+                    if(navigator.vibrate) navigator.vibrate(50);
+                }
             };
             div.appendChild(b);
         });
