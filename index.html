@@ -2,240 +2,208 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Human Races: Еволюційний Квест</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Human Races Explorer</title>
+    <!-- Підключаємо бібліотеку для сенсорного перетягування -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6c5ce7;
             --secondary: #a29bfe;
-            --bg: #f4f7f6;
-            --white: #ffffff;
-            --euro-color: #74b9ff;
-            --mong-color: #ffeaa7;
-            --negro-color: #fab1a0;
-            --foundation-color: #55efc4;
+            --euro: #74b9ff;
+            --mong: #ffeaa7;
+            --negro: #fab1a0;
+            --all: #55efc4;
+            --bg: #f8f9fa;
         }
 
         body {
             font-family: 'Open Sans', sans-serif;
             background-color: var(--bg);
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            touch-action: manipulation; /* Покращує відгук на сенсорі */
         }
 
         header {
-            width: 100%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 30px 0;
+            padding: 25px;
             text-align: center;
-            border-radius: 0 0 30px 30px;
-            margin-bottom: 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .container {
-            width: 90%;
-            max-width: 800px;
-            padding: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
         }
 
-        .card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+        .section-title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
         }
 
-        h2 { color: var(--primary); text-align: center; }
-
-        /* Стилі для перетягування */
-        .word-pool {
+        /* Пул слів */
+        .pool {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            padding: 20px;
-            background: #e2e8f0;
+            background: #fff;
+            padding: 15px;
             border-radius: 15px;
             min-height: 80px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border: 2px dashed #cbd5e0;
+            justify-content: center;
         }
 
         .word {
-            background: var(--white);
-            padding: 10px 18px;
+            background: #fff;
+            padding: 12px 18px;
             border-radius: 12px;
             cursor: grab;
-            user-select: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
             font-weight: 600;
-            border: 1px solid #edf2f7;
+            border: 1px solid #eee;
+            user-select: none;
         }
 
-        .word:active { cursor: grabbing; }
-
-        .skyscraper { display: flex; flex-direction: column; gap: 10px; }
+        /* Поверхи хмарочоса */
+        .skyscraper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
         .floor {
             padding: 20px;
             border-radius: 15px;
-            min-height: 60px;
-            transition: 0.3s;
-            border: 2px solid transparent;
+            min-height: 70px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
             position: relative;
+            transition: 0.3s;
+            border: 2px solid rgba(0,0,0,0.05);
         }
 
-        .floor-label {
+        .floor::before {
+            content: attr(data-label);
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-size: 0.7rem;
             font-weight: bold;
-            font-size: 0.8em;
             text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-            opacity: 0.7;
+            opacity: 0.5;
         }
 
-        .floor.hover { border-color: var(--primary); background: #f0f0ff; }
-
-        .euro-floor { background: var(--euro-color); }
-        .mong-floor { background: var(--mong-color); }
-        .negro-floor { background: var(--negro-color); }
-        .foundation { background: var(--foundation-color); border: 3px solid #00b894; }
+        .euro-f { background-color: var(--euro); }
+        .mong-f { background-color: var(--mong); }
+        .negro-f { background-color: var(--negro); }
+        .all-f { background-color: var(--all); border: 3px solid #00b894; }
 
         .btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 18px;
             border-radius: 15px;
             font-weight: bold;
-            cursor: pointer;
             width: 100%;
-            font-size: 1.1em;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            cursor: pointer;
         }
 
         .hidden { display: none; }
+
+        /* Кольори для перевірки */
+        .correct { background-color: #d1fae5 !important; border-color: #10b981 !important; }
+        .wrong { background-color: #fee2e2 !important; border-color: #ef4444 !important; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>🌍 Дослідник людства</h1>
+    <h1 style="margin:0; font-family:'Montserrat'">🌍 Race Explorer</h1>
 </header>
 
-<div class="container" id="view-theory">
-    <div class="card">
-        <h2>Хто ми?</h2>
-        <p>Кожна раса — це унікальна відповідь природи на умови життя. Давай вивчимо їх!</p>
-        <ul>
-            <li><b>Європеоїдна:</b> Світла шкіра, вузький ніс.</li>
-            <li><b>Монголоїдна:</b> Складка повіки, пласке обличчя.</li>
-            <li><b>Негроїдна:</b> Темна шкіра, кучеряве волосся.</li>
-        </ul>
-        <button class="btn" onclick="switchView('view-practice')">Будувати хмарочос 🏗️</button>
+<div class="container" id="theory">
+    <div style="background:white; padding:20px; border-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.05)">
+        <h2 style="color:var(--primary)">Привіт, досліднику!</h2>
+        <p>Сьогодні ти дізнаєшся, як природа «дизайнила» людей для різних умов життя.</p>
+        <p>Натискай кнопку, щоб розпочати інтерактивну гру на дошці!</p>
+        <button class="btn" onclick="showSection('practice')">Почати квест 🚀</button>
     </div>
 </div>
 
-<div class="container hidden" id="view-practice">
-    <div class="card">
-        <h2>🏗️ Словниковий хмарочос</h2>
-        <p>Перетягни слова на правильні поверхи. Фундамент — це те, що є у всіх!</p>
-        
-        <div class="word-pool" id="pool" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w1">Епікантус</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w2">Вузький ніс</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w3">Меланін</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w4">Мова</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w5">Плоске обличчя</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w6">Мрії</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w7">Хвилясте волосся</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w8">Творчість</div>
-            <div class="word" draggable="true" ondragstart="drag(event)" id="w9">Темна шкіра</div>
-        </div>
+<div class="container hidden" id="practice">
+    <div class="section-title">🏗️ Побудуй хмарочос людства</div>
+    <p style="text-align:center; font-size:0.9rem; color:#666">Перетягуй слова з сірого поля у кольорові зони</p>
 
-        <div class="skyscraper">
-            <div class="floor euro-floor" ondrop="drop(event)" ondragover="allowDrop(event)" id="euro">
-                <span class="floor-label">Європеоїдна раса</span>
-            </div>
-            <div class="floor mong-floor" ondrop="drop(event)" ondragover="allowDrop(event)" id="mong">
-                <span class="floor-label">Монголоїдна раса</span>
-            </div>
-            <div class="floor negro-floor" ondrop="drop(event)" ondragover="allowDrop(event)" id="negro">
-                <span class="floor-label">Негроїдна раса</span>
-            </div>
-            <div class="floor foundation" ondrop="drop(event)" ondragover="allowDrop(event)" id="all">
-                <span class="floor-label">💎 Фундамент (УСІ ЛЮДИ)</span>
-            </div>
-        </div>
-
-        <button class="btn" style="margin-top:20px; background:#636e72;" onclick="switchView('view-theory')">Назад</button>
+    <!-- Склад слів -->
+    <div id="wordPool" class="pool sortable-list">
+        <div class="word" data-type="mong">Епікантус</div>
+        <div class="word" data-type="euro">Вузький ніс</div>
+        <div class="word" data-type="negro">Меланін</div>
+        <div class="word" data-type="all">Мова</div>
+        <div class="word" data-type="mong">Плоске обличчя</div>
+        <div class="word" data-type="all">Мрії</div>
+        <div class="word" data-type="euro">Хвилясте волосся</div>
+        <div class="word" data-type="all">Творчість</div>
+        <div class="word" data-type="negro">Темна шкіра</div>
     </div>
+
+    <!-- Хмарочос -->
+    <div class="skyscraper">
+        <div class="floor euro-f sortable-list" id="euro" data-label="Європеоїдна раса"></div>
+        <div class="floor mong-f sortable-list" id="mong" data-label="Монголоїдна раса"></div>
+        <div class="floor negro-f sortable-list" id="negro" data-label="Негроїдна раса"></div>
+        <div class="floor all-f sortable-list" id="all" data-label="💎 Фундамент (Усі люди)"></div>
+    </div>
+
+    <button class="btn" style="background:#636e72" onclick="showSection('theory')">Назад</button>
 </div>
 
 <script>
-    function allowDrop(ev) {
-        ev.preventDefault();
-        if (ev.target.classList.contains('floor')) {
-            ev.target.classList.add('hover');
-        }
-    }
+    // Ініціалізація перетягування для кожного контейнера
+    const containers = document.querySelectorAll('.sortable-list');
+    
+    containers.forEach(container => {
+        new Sortable(container, {
+            group: 'shared', // дозволяє перетягувати між списками
+            animation: 150,
+            ghostClass: 'blue-background-class',
+            // Спрацьовує, коли елемент кинули в новий список
+            onAdd: function (evt) {
+                const itemEl = evt.item;
+                const targetId = evt.to.id;
+                const correctType = itemEl.getAttribute('data-type');
 
-    function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-    }
+                if (targetId === 'wordPool') {
+                    itemEl.classList.remove('correct', 'wrong');
+                } else if (targetId === correctType) {
+                    itemEl.classList.add('correct');
+                    itemEl.classList.remove('wrong');
+                } else {
+                    itemEl.classList.add('wrong');
+                    itemEl.classList.remove('correct');
+                }
+            }
+        });
+    });
 
-    function drop(ev) {
-        ev.preventDefault();
-        const data = ev.dataTransfer.getData("text");
-        const draggedElement = document.getElementById(data);
-        let target = ev.target;
-
-        // Перевіряємо, щоб не скинути в середину іншого слова
-        while (target && !target.classList.contains('floor') && !target.classList.contains('word-pool')) {
-            target = target.parentElement;
-        }
-
-        if (target) {
-            target.classList.remove('hover');
-            target.appendChild(draggedElement);
-            checkSuccess(data, target.id);
-        }
-    }
-
-    function checkSuccess(wordId, floorId) {
-        const rules = {
-            "w1": "mong", "w5": "mong", // Монголоїдна
-            "w2": "euro", "w7": "euro", // Європеоїдна
-            "w3": "negro", "w9": "negro", // Негроїдна
-            "w4": "all", "w6": "all", "w8": "all" // Фундамент
-        };
-
-        const word = document.getElementById(wordId);
-        if (rules[wordId] === floorId) {
-            word.style.background = "#d1fae5";
-            word.style.borderColor = "#10b981";
-        } else if (floorId !== "pool") {
-            word.style.background = "#fee2e2";
-            word.style.borderColor = "#ef4444";
-        } else {
-            word.style.background = "white";
-            word.style.borderColor = "#edf2f7";
-        }
-    }
-
-    function switchView(id) {
-        document.getElementById('view-theory').classList.add('hidden');
-        document.getElementById('view-practice').classList.add('hidden');
+    function showSection(id) {
+        document.getElementById('theory').classList.add('hidden');
+        document.getElementById('practice').classList.add('hidden');
         document.getElementById(id).classList.remove('hidden');
     }
-
-    // Додаємо підтримку тач-подій для мобільних пристроїв
-    document.addEventListener("dragover", function(event) {
-        event.preventDefault();
-    }, false);
 </script>
 
 </body>
