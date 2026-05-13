@@ -3,200 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Humanity Core 2026 | НУШ Географія</title>
+    <title>Humanity Explorer 360</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --euro: #60a5fa; --mong: #fbbf24; --negro: #fb7185; --all: #34d399;
+            --primary: #6366f1; --euro: #60a5fa; --mong: #fbbf24; --negro: #fb7185; --all: #34d399;
             --bg: #0f172a; --glass: rgba(255, 255, 255, 0.05);
         }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at top right, #1e293b, #0f172a);
-            color: #f8fafc; margin: 0; min-height: 100vh;
-        }
-
-        header {
-            padding: 20px; text-align: center; background: var(--glass);
-            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        h1 {
-            font-family: 'Montserrat', sans-serif; font-size: 1.5rem;
-            background: linear-gradient(to right, #818cf8, #f472b6);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
-        }
-
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-
-        /* Екрани */
-        .screen { display: none; animation: fadeIn 0.5s ease; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #f8fafc; margin: 0; }
+        .container { max-width: 850px; margin: 0 auto; padding: 20px; }
+        .screen { display: none; animation: fadeIn 0.4s ease; }
         .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Навчальні картки */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .info-card { background: var(--glass); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .info-card i { font-size: 3rem; display: block; margin-bottom: 10px; }
 
         /* Хмарочос */
-        .pool {
-            background: var(--glass); border: 2px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap;
-            gap: 10px; justify-content: center; margin-bottom: 20px; min-height: 80px;
-        }
-
-        .word {
-            background: white; color: #1e293b; padding: 10px 16px; border-radius: 12px;
-            font-weight: 700; cursor: grab; box-shadow: 0 10px 15px rgba(0,0,0,0.3);
-        }
-
-        .floor {
-            background: var(--glass); border-radius: 15px; padding: 30px 10px 10px;
-            min-height: 50px; display: flex; flex-wrap: wrap; gap: 8px;
-            margin-bottom: 10px; position: relative; border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .floor::before {
-            content: attr(data-label); position: absolute; top: 8px; left: 12px;
-            font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,0.4);
-        }
-
-        .euro-f { border-left: 5px solid var(--euro); }
-        .mong-f { border-left: 5px solid var(--mong); }
-        .negro-f { border-left: 5px solid var(--negro); }
-        .all-f { border-left: 5px solid var(--all); background: rgba(52, 211, 153, 0.05); }
-
+        .pool { background: var(--glass); border: 2px dashed #444; border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap; gap: 10px; min-height: 80px; margin: 20px 0; }
+        .word { background: white; color: #1e293b; padding: 10px 15px; border-radius: 10px; font-weight: 700; cursor: grab; }
+        .floor { background: var(--glass); border-radius: 15px; padding: 35px 10px 10px; min-height: 50px; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; position: relative; border-left: 5px solid #444; }
+        .floor::before { content: attr(data-label); position: absolute; top: 10px; left: 10px; font-size: 0.7rem; color: rgba(255,255,255,0.4); font-weight: 800; }
         .correct { background: #10b981 !important; color: white !important; }
-        .wrong { background: #ef4444 !important; color: white !important; }
 
-        /* Кнопки */
-        .btn {
-            background: var(--primary); color: white; border: none; padding: 15px 25px;
-            border-radius: 15px; font-weight: 800; cursor: pointer; width: 100%;
-            margin-top: 15px; transition: 0.3s;
-        }
+        /* Квіз */
+        .quiz-box { background: var(--glass); padding: 30px; border-radius: 25px; text-align: center; }
+        .opt { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: none; color: white; cursor: pointer; transition: 0.2s; font-size: 1rem; }
+        .opt:hover { background: rgba(255,255,255,0.1); }
 
-        .quiz-option {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; padding: 15px; border-radius: 12px; width: 100%; margin: 5px 0;
-            text-align: left; font-weight: 600; cursor: pointer;
-        }
-
-        /* Рефлексія */
-        .card-ref {
-            background: var(--glass); padding: 25px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1); margin-top: 20px;
-        }
+        .btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<header><h1>HUMANITY CORE 2.6</h1></header>
-
 <div class="container">
-    <!-- Screen 1: Вступ -->
+    
+    <!-- Етап 1: Навчання -->
     <div id="s1" class="screen active">
-        <div class="card-ref">
-            <h2 style="color:var(--primary)">Привіт, Досліднику! 🌍</h2>
-            <p>Сьогодні ти дізнаєшся, що раси — це не кордони, а дивовижна адаптація нашого тіла до рідної планети. Ми різні зовні, але ідентичні всередині.</p>
-            <button class="btn" onclick="nav('s2')">ПОЧАТИ ДОСЛІДЖЕННЯ 🚀</button>
+        <h2 style="text-align:center">🎨 Галерея Расових Ознак</h2>
+        <div class="info-grid">
+            <div class="info-card" style="border-top: 5px solid var(--euro)">
+                <i>🧔🏼‍♂️</i>
+                <h3>Європеоїдна</h3>
+                <p>Світла шкіра, вузький ніс (гріє повітря), волосся м'яке та хвилясте.</p>
+            </div>
+            <div class="info-card" style="border-top: 5px solid var(--mong)">
+                <i>😑</i>
+                <h3>Монголоїдна</h3>
+                <p>Жовтуватий відтінок шкіри, обличчя пласке, епікантус (захист очей).</p>
+            </div>
+            <div class="info-card" style="border-top: 5px solid var(--negro)">
+                <i>🏾</i>
+                <h3>Негроїдна</h3>
+                <p>Темна шкіра (багато меланіну), кучеряве волосся, широкі ніздрі.</p>
+            </div>
         </div>
+        <button class="btn" onclick="nav('s2')">ПЕРЕЙТИ ДО ПРАКТИКИ 🏗️</button>
     </div>
 
-    <!-- Screen 2: Хмарочос -->
+    <!-- Етап 2: Хмарочос -->
     <div id="s2" class="screen">
-        <h3 style="text-align:center">🏗️ Крок 1: Побудуй Хмарочос Рас</h3>
-        <p style="text-align:center; font-size:0.8rem; opacity:0.7">Перетягни ознаки на їхні "поверхи".</p>
-        
+        <h3>🏗️ Сортування ознак</h3>
         <div class="pool sortable-list" id="wordPool">
-            <div class="word" data-type="mong">Епікантус</div>
-            <div class="word" data-type="euro">Вузький ніс</div>
-            <div class="word" data-type="negro">Меланін</div>
-            <div class="word" data-type="all">Мова</div>
-            <div class="word" data-type="mong">Плоске обличчя</div>
-            <div class="word" data-type="all">Мрії</div>
-            <div class="word" data-type="euro">М'яке волосся</div>
-            <div class="word" data-type="all">Творчість</div>
-            <div class="word" data-type="negro">Темна шкіра</div>
+            <div class="word" data-t="mong">Епікантус</div>
+            <div class="word" data-t="euro">Вузький ніс</div>
+            <div class="word" data-t="negro">Меланін</div>
+            <div class="word" data-t="all">Мова</div>
+            <div class="word" data-t="mong">Пласке обличчя</div>
+            <div class="word" data-t="all">Мрії</div>
+            <div class="word" data-t="euro">М'яке волосся</div>
+            <div class="word" data-t="all">Сміх</div>
+            <div class="word" data-t="negro">Широкі ніздрі</div>
         </div>
-
-        <div class="skyscraper">
-            <div class="floor euro-f sortable-list" id="euro" data-label="Європеоїдна"></div>
-            <div class="floor mong-f sortable-list" id="mong" data-label="Монголоїдна"></div>
-            <div class="floor negro-f sortable-list" id="negro" data-label="Негроїдна"></div>
-            <div class="floor all-f sortable-list" id="all" data-label="💎 ФУНДАМЕНТ (Усі ми)"></div>
-        </div>
-        <button id="nextBtn" class="btn" style="display:none" onclick="nav('s3')">Крок 2: Бліц-перевірка ⚡</button>
+        <div class="floor" id="euro" data-label="ЄВРОПЕОЇДНА" style="border-color: var(--euro)"></div>
+        <div class="floor" id="mong" data-label="МОНГОЛОЇДНА" style="border-color: var(--mong)"></div>
+        <div class="floor" id="negro" data-label="НЕГРОЇДНА" style="border-color: var(--negro)"></div>
+        <div class="floor" id="all" data-label="💎 ЄДНІСТЬ ЛЮДСТВА" style="border-color: var(--all)"></div>
+        <button id="toQuiz" class="btn" style="display:none" onclick="nav('s3')">ДО КВІЗУ (12 ПИТАНЬ) ⚡</button>
     </div>
 
-    <!-- Screen 3: Бліц -->
+    <!-- Етап 3: Квіз -->
     <div id="s3" class="screen">
-        <div class="card-ref">
-            <h3 id="q-text">Запитання...</h3>
-            <div id="q-options"></div>
-            <p id="q-feedback" style="margin-top:10px; font-weight:bold"></p>
+        <div class="quiz-box">
+            <div id="progress" style="font-size: 0.8rem; opacity: 0.5; margin-bottom: 10px;">Питання 1 з 12</div>
+            <h2 id="qText">Завантаження...</h2>
+            <div id="qOpts"></div>
         </div>
     </div>
 
-    <!-- Screen 4: Рефлексія -->
+    <!-- Етап 4: Рефлексія -->
     <div id="s4" class="screen">
-        <div class="card-ref">
-            <h2 style="color:var(--all)">Квест пройдено! 🎉</h2>
-            <p><b>Твій код дослідника:</b> 100% Людини Розумної.</p>
-            <hr style="opacity:0.1">
-            <p><b>Рефлексія:</b></p>
-            <p>1. Яка ознака твого "скіна" тобі подобається найбільше?</p>
-            <p>2. Що б ти запитав у однолітка з іншого континенту?</p>
-            <button class="btn" onclick="location.reload()">ПРОЙТИ ЩЕ РАЗ 🔄</button>
+        <div class="quiz-box" style="text-align: left;">
+            <h2 style="text-align: center; color: var(--all);">Урок завершено! 🌟</h2>
+            <p><b>1. Що тебе найбільше здивувало?</b></p>
+            <textarea style="width:100%; background: #1e293b; color: white; border:1px solid #444; border-radius:10px; padding:10px;"></textarea>
+            <p><b>2. Оціни свій настрій:</b></p>
+            <div style="display:flex; justify-content: space-around; font-size: 2rem; cursor: pointer;">
+                <span>🤩</span><span>🤔</span><span>😎</span>
+            </div>
+            <button class="btn" onclick="location.reload()">ПОЧАТИ ЗНОВУ</button>
         </div>
     </div>
+
 </div>
 
 <script>
     function nav(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(id === 's3') startQuiz();
+        if(id === 's3') showQ();
     }
 
-    // Sortable Logic
-    const lists = document.querySelectorAll('.sortable-list');
-    lists.forEach(list => {
-        new Sortable(list, {
-            group: 'races', animation: 200,
-            onAdd: (evt) => {
-                const item = evt.item; const target = evt.to.id; const type = item.dataset.type;
-                if(target === type || (type === 'all' && target === 'all')) {
-                    item.classList.add('correct'); item.classList.remove('wrong');
-                } else if(target !== 'wordPool') {
-                    item.classList.add('wrong'); item.classList.remove('correct');
+    // Sortable
+    new Sortable(wordPool, { group: 'r', animation: 150 });
+    [euro, mong, negro, all].forEach(el => {
+        new Sortable(el, {
+            group: 'r', animation: 150,
+            onAdd: (e) => {
+                if(e.item.dataset.t === e.to.id || (e.item.dataset.t === 'all' && e.to.id === 'all')) {
+                    e.item.classList.add('correct');
                 }
-                if(document.querySelectorAll('.correct').length === 9) document.getElementById('nextBtn').style.display='block';
+                if(document.querySelectorAll('.correct').length === 9) document.getElementById('toQuiz').style.display='block';
             }
         });
     });
 
-    // Quiz Logic
-    const quiz = [
-        {q: "Навіщо еволюція придумала меланін?", a: ["Для краси", "Захист від опіків сонця", "Щоб краще плавати"], c: 1},
-        {q: "Чому у жителів півночі вузький ніс?", a: ["Щоб гріти повітря", "Для кращого нюху", "Щоб менше дихати"], c: 0}
+    // Quiz Data (12 Questions)
+    const questions = [
+        {q: "Яка ознака допомагає жителям екватора не перегрівати голову?", a: ["Світла шкіра", "Кучеряве волосся", "Вузький ніс"], c: 1},
+        {q: "Епікантус — це захист очей від...", a: ["Холоду", "Пилу та вітру", "Яскравого світла ламп"], c: 1},
+        {q: "Що робить шкіру темною?", a: ["Вітамін С", "Меланін", "Кисень"], c: 1},
+        {q: "Спільна риса всіх рас — це...", a: ["Колір очей", "Здатність до творчості", "Будова носа"], c: 1},
+        {q: "Вузький ніс європеоїдів потрібен для...", a: ["Швидкого бігу", "Зігрівання повітря", "Кращого нюху"], c: 1},
+        {q: "Яка раса найчисельніша у світі?", a: ["Європеоїдна", "Монголоїдна", "Негроїдна"], c: 0},
+        {q: "Чи впливає раса на розумові здібності?", a: ["Так", "Ні, всі люди рівні", "Тільки частково"], c: 1},
+        {q: "Де виникло людство за даними вчених?", a: ["В Африці", "В Європі", "В Азії"], c: 0},
+        {q: "Чому у монголоїдів пласке обличчя?", a: ["Це випадковість", "Захист від обмороження", "Для краси"], c: 1},
+        {q: "Широкі ніздрі негроїдів допомагають...", a: ["Гріти повітря", "Швидше охолоджуватися", "Краще плавати"], c: 1},
+        {q: "Расові ознаки — це результат...", a: ["Магії", "Адаптації до природи", "Хвороб"], c: 1},
+        {q: "Яка наука вивчає походження рас?", a: ["Математика", "Антропологія", "Фізика"], c: 1}
     ];
-    let curQ = 0;
-    function startQuiz() {
-        const q = quiz[curQ];
-        document.getElementById('q-text').innerText = q.q;
-        const optDiv = document.getElementById('q-options');
-        optDiv.innerHTML = '';
-        q.a.forEach((opt, i) => {
-            const b = document.createElement('button');
-            b.className = 'quiz-option'; b.innerText = opt;
+
+    let cur = 0;
+    function showQ() {
+        const q = questions[cur];
+        document.getElementById('progress').innerText = `Питання ${cur + 1} з 12`;
+        document.getElementById('qText').innerText = q.q;
+        const div = document.getElementById('qOpts'); div.innerHTML = '';
+        q.a.forEach((o, i) => {
+            const b = document.createElement('button'); b.className = 'opt'; b.innerText = o;
             b.onclick = () => {
                 if(i === q.c) {
-                    b.style.background = '#10b981'; curQ++;
-                    setTimeout(() => curQ < quiz.length ? startQuiz() : nav('s4'), 1000);
+                    b.style.background = '#10b981';
+                    setTimeout(() => { cur++; cur < 12 ? showQ() : nav('s4'); }, 800);
                 } else { b.style.background = '#ef4444'; }
             };
-            optDiv.appendChild(b);
+            div.appendChild(b);
         });
     }
 </script>
