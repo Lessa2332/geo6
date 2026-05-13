@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Races: Еволюційний Квест</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --bg: #f9f9fb;
+            --text: #2d3436;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .race-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .race-card:hover { transform: translateY(-5px); }
+
+        h2 { color: var(--primary); margin-top: 0; }
+
+        .tag {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover { background: #5649c0; }
+
+        #practice-section { display: none; }
+
+        .quiz-item {
+            background: #eeeefd;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .hidden { display: none; }
+
+        .result-box {
+            background: #dff9fb;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px dashed var(--primary);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌍 Людські раси</h1>
+    <p>Дізнайся, чому ми такі різні та водночас однакові!</p>
+</header>
+
+<div class="container" id="theory-section">
+    <div class="race-card">
+        <span class="tag">Майстри помірного клімату</span>
+        <h2>Європеоїдна раса</h2>
+        <p><b>Ознаки:</b> Світла шкіра, вузький ніс, що виступає, тонкі губи, волосся від світлого до темного.</p>
+        <p><b>Унікальність:</b> Форма носа допомагає зігрівати повітря, а світла шкіра — ловити кожен промінь сонця для вітаміну D.</p>
+        <p><i>Приклад: Жителі Європи, України, Близького Сходу.</i></p>
+    </div>
+
+    <div class="race-card">
+        <span class="tag">Захищені від вітру</span>
+        <h2>Монголоїдна раса</h2>
+        <p><b>Ознаки:</b> Смаглява шкіра, пласке обличчя, вузький розріз очей (епікантус), пряме чорне волосся.</p>
+        <p><b>Унікальність:</b> Складка на повіці захищає очі від пилу степів та сліпучого снігу.</p>
+        <p><i>Приклад: Жителі Китаю, Японії, Казахстану, індіанці Америки.</i></p>
+    </div>
+
+    <div class="race-card">
+        <span class="tag">Чемпіони спеки</span>
+        <h2>Негроїдна раса</h2>
+        <p><b>Ознаки:</b> Темна шкіра, кучеряве волосся, широкі ніздрі, повні губи.</p>
+        <p><b>Унікальність:</b> Меланін у шкірі — це природний захист від опіків, а кучеряве волосся створює «повітряну подушку» для голови.</p>
+        <p><i>Приклад: Жителі Центральної та Південної Африки.</i></p>
+    </div>
+
+    <button class="btn" onclick="showPractice()">🚀 Перейти до вправ та дослідження</button>
+</div>
+
+<div class="container" id="practice-section">
+    <h2>🧪 Лабораторія антрополога</h2>
+    
+    <div class="race-card">
+        <h3>1. Досліди себе (Калькулятор %)</h3>
+        <p>Обери ознаки, які підходять тобі найбільше:</p>
+        <div class="quiz-item">
+            <label>Волосся: </label>
+            <select id="hair">
+                <option value="euro">М'яке/Хвилясте (Євро)</option>
+                <option value="mong">Пряме/Жорстке (Монг)</option>
+                <option value="negro">Дуже кучеряве (Негро)</option>
+            </select>
+        </div>
+        <div class="quiz-item">
+            <label>Очі: </label>
+            <select id="eyes">
+                <option value="euro">Відкрита повіка (Євро)</option>
+                <option value="mong">Складка/Епікантус (Монг)</option>
+                <option value="negro">Темні/Великі (Негро/Австр)</option>
+            </select>
+        </div>
+        <button class="btn" onclick="calculateStats()">Показати мій результат</button>
+        
+        <div id="result" class="result-box hidden"></div>
+    </div>
+
+    <div class="race-card">
+        <h3>2. Вправа «Логічний зв'язок»</h3>
+        <p>Чому у жителів півночі вузький ніс? 👃</p>
+        <button onclick="alert('Правильно! Щоб холодне повітря зігрілося перед тим, як потрапити в легені.')">Дізнатися відповідь</button>
+    </div>
+
+    <button class="btn" style="background: #ccc;" onclick="showTheory()">⬅️ Назад до теорії</button>
+</div>
+
+<script>
+    function showPractice() {
+        document.getElementById('theory-section').style.display = 'none';
+        document.getElementById('practice-section').style.display = 'block';
+        window.scrollTo(0,0);
+    }
+
+    function showTheory() {
+        document.getElementById('theory-section').style.display = 'block';
+        document.getElementById('practice-section').style.display = 'none';
+        window.scrollTo(0,0);
+    }
+
+    function calculateStats() {
+        const hair = document.getElementById('hair').value;
+        const eyes = document.getElementById('eyes').value;
+        let euro = 0, mong = 0, negro = 0;
+
+        [hair, eyes].forEach(v => {
+            if(v === 'euro') euro += 50;
+            if(v === 'mong') mong += 50;
+            if(v === 'negro') negro += 50;
+        });
+
+        const resDiv = document.getElementById('result');
+        resDiv.classList.remove('hidden');
+        resDiv.innerHTML = `<b>Твій генетичний мікс (за цими ознаками):</b><br>
+        🇪🇺 Європеоїдна: ${euro}%<br>
+        🌏 Монголоїдна: ${mong}%<br>
+        🌍 Негроїдна: ${negro}%<br><br>
+        <i>Пам'ятай: ми всі — один вид, і змішування ознак — це те, що робить нас унікальними!</i>`;
+    }
+</script>
+
+</body>
+</html>
