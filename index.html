@@ -3,267 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GeoDecoder Pro 2026</title>
+    <title>Humanity Core 2026 | НУШ Географія</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6366f1;
-            --euro: #60a5fa;
-            --mong: #fbbf24;
-            --negro: #fb7185;
-            --all: #34d399;
-            --bg: #0f172a;
-            --glass: rgba(255, 255, 255, 0.05);
+            --euro: #60a5fa; --mong: #fbbf24; --negro: #fb7185; --all: #34d399;
+            --bg: #0f172a; --glass: rgba(255, 255, 255, 0.05);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: radial-gradient(circle at top right, #1e293b, #0f172a);
-            color: #f8fafc;
-            margin: 0;
-            min-height: 100vh;
+            color: #f8fafc; margin: 0; min-height: 100vh;
         }
 
         header {
-            padding: 25px;
-            text-align: center;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px; text-align: center; background: var(--glass);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
+            font-family: 'Montserrat', sans-serif; font-size: 1.5rem;
             background: linear-gradient(to right, #818cf8, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 
-        /* Хмарочос блоки */
+        /* Екрани */
+        .screen { display: none; animation: fadeIn 0.5s ease; }
+        .active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Хмарочос */
         .pool {
-            background: var(--glass);
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 25px;
-            min-height: 80px;
+            background: var(--glass); border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap;
+            gap: 10px; justify-content: center; margin-bottom: 20px; min-height: 80px;
         }
 
         .word {
-            background: white;
-            color: #1e293b;
-            padding: 12px 18px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: grab;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.3);
-            user-select: none;
+            background: white; color: #1e293b; padding: 10px 16px; border-radius: 12px;
+            font-weight: 700; cursor: grab; box-shadow: 0 10px 15px rgba(0,0,0,0.3);
         }
 
-        .skyscraper .floor {
-            background: var(--glass);
-            border-radius: 18px;
-            padding: 35px 15px 15px;
-            min-height: 60px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 12px;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .floor {
+            background: var(--glass); border-radius: 15px; padding: 30px 10px 10px;
+            min-height: 50px; display: flex; flex-wrap: wrap; gap: 8px;
+            margin-bottom: 10px; position: relative; border: 1px solid rgba(255,255,255,0.1);
         }
 
         .floor::before {
-            content: attr(data-label);
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.4);
+            content: attr(data-label); position: absolute; top: 8px; left: 12px;
+            font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,0.4);
         }
 
-        .euro-f { border-left: 6px solid var(--euro); }
-        .mong-f { border-left: 6px solid var(--mong); }
-        .negro-f { border-left: 6px solid var(--negro); }
-        .all-f { border-left: 6px solid var(--all); }
+        .euro-f { border-left: 5px solid var(--euro); }
+        .mong-f { border-left: 5px solid var(--mong); }
+        .negro-f { border-left: 5px solid var(--negro); }
+        .all-f { border-left: 5px solid var(--all); background: rgba(52, 211, 153, 0.05); }
 
         .correct { background: #10b981 !important; color: white !important; }
         .wrong { background: #ef4444 !important; color: white !important; }
 
-        /* Бліц-квест стилі */
-        .quiz-card {
-            background: var(--glass);
-            padding: 30px;
-            border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
+        /* Кнопки */
+        .btn {
+            background: var(--primary); color: white; border: none; padding: 15px 25px;
+            border-radius: 15px; font-weight: 800; cursor: pointer; width: 100%;
+            margin-top: 15px; transition: 0.3s;
         }
 
         .quiz-option {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.1);
-            color: white;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: white; padding: 15px; border-radius: 12px; width: 100%; margin: 5px 0;
+            text-align: left; font-weight: 600; cursor: pointer;
         }
 
-        /* Модалка */
-        #win-modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.98);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
+        /* Рефлексія */
+        .card-ref {
+            background: var(--glass); padding: 25px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1); margin-top: 20px;
         }
-
-        .hidden { display: none; }
-        .btn-next { background: var(--primary); color: white; padding: 15px 30px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; margin-top: 20px;}
     </style>
 </head>
 <body>
 
-<header>
-    <h1>GEO-DECODER v2.6</h1>
-</header>
+<header><h1>HUMANITY CORE 2.6</h1></header>
 
-<!-- Секція 1: Хмарочос -->
-<div class="container" id="game-1">
-    <div class="pool sortable-list" id="wordPool">
-        <div class="word" data-type="mong">Епікантус</div>
-        <div class="word" data-type="euro">Вузький ніс</div>
-        <div class="word" data-type="negro">Меланін</div>
-        <div class="word" data-type="all">Мова</div>
-        <div class="word" data-type="mong">Плоске обличчя</div>
-        <div class="word" data-type="all">Мрії</div>
-        <div class="word" data-type="euro">М'яке волосся</div>
-        <div class="word" data-type="all">Творчість</div>
-        <div class="word" data-type="negro">Темна шкіра</div>
+<div class="container">
+    <!-- Screen 1: Вступ -->
+    <div id="s1" class="screen active">
+        <div class="card-ref">
+            <h2 style="color:var(--primary)">Привіт, Досліднику! 🌍</h2>
+            <p>Сьогодні ти дізнаєшся, що раси — це не кордони, а дивовижна адаптація нашого тіла до рідної планети. Ми різні зовні, але ідентичні всередині.</p>
+            <button class="btn" onclick="nav('s2')">ПОЧАТИ ДОСЛІДЖЕННЯ 🚀</button>
+        </div>
     </div>
 
-    <div class="skyscraper">
-        <div class="floor euro-f sortable-list" id="euro" data-label="Європеоїдна"></div>
-        <div class="floor mong-f sortable-list" id="mong" data-label="Монголоїдна"></div>
-        <div class="floor negro-f sortable-list" id="negro" data-label="Негроїдна"></div>
-        <div class="floor all-f sortable-list" id="all" data-label="Спільне для всіх"></div>
-    </div>
-</div>
+    <!-- Screen 2: Хмарочос -->
+    <div id="s2" class="screen">
+        <h3 style="text-align:center">🏗️ Крок 1: Побудуй Хмарочос Рас</h3>
+        <p style="text-align:center; font-size:0.8rem; opacity:0.7">Перетягни ознаки на їхні "поверхи".</p>
+        
+        <div class="pool sortable-list" id="wordPool">
+            <div class="word" data-type="mong">Епікантус</div>
+            <div class="word" data-type="euro">Вузький ніс</div>
+            <div class="word" data-type="negro">Меланін</div>
+            <div class="word" data-type="all">Мова</div>
+            <div class="word" data-type="mong">Плоске обличчя</div>
+            <div class="word" data-type="all">Мрії</div>
+            <div class="word" data-type="euro">М'яке волосся</div>
+            <div class="word" data-type="all">Творчість</div>
+            <div class="word" data-type="negro">Темна шкіра</div>
+        </div>
 
-<!-- Секція 2: Бліц-квест -->
-<div class="container hidden" id="game-2">
-    <div class="quiz-card">
-        <h2 id="quiz-q">Завантаження...</h2>
-        <div id="quiz-options"></div>
-        <p id="quiz-feedback" style="margin-top: 15px; font-weight: bold;"></p>
+        <div class="skyscraper">
+            <div class="floor euro-f sortable-list" id="euro" data-label="Європеоїдна"></div>
+            <div class="floor mong-f sortable-list" id="mong" data-label="Монголоїдна"></div>
+            <div class="floor negro-f sortable-list" id="negro" data-label="Негроїдна"></div>
+            <div class="floor all-f sortable-list" id="all" data-label="💎 ФУНДАМЕНТ (Усі ми)"></div>
+        </div>
+        <button id="nextBtn" class="btn" style="display:none" onclick="nav('s3')">Крок 2: Бліц-перевірка ⚡</button>
     </div>
-</div>
 
-<!-- Модалка перемоги -->
-<div id="win-modal">
-    <h2 style="font-size: 3rem; color: var(--all);">УСПІХ! 🎉</h2>
-    <p style="font-size: 1.2rem; text-align: center;">Ти розшифрував код рас. Готовий до фінального Бліц-квесту?</p>
-    <button class="btn-next" onclick="startQuiz()">ТАК, ПОЇХАЛИ! ⚡</button>
+    <!-- Screen 3: Бліц -->
+    <div id="s3" class="screen">
+        <div class="card-ref">
+            <h3 id="q-text">Запитання...</h3>
+            <div id="q-options"></div>
+            <p id="q-feedback" style="margin-top:10px; font-weight:bold"></p>
+        </div>
+    </div>
+
+    <!-- Screen 4: Рефлексія -->
+    <div id="s4" class="screen">
+        <div class="card-ref">
+            <h2 style="color:var(--all)">Квест пройдено! 🎉</h2>
+            <p><b>Твій код дослідника:</b> 100% Людини Розумної.</p>
+            <hr style="opacity:0.1">
+            <p><b>Рефлексія:</b></p>
+            <p>1. Яка ознака твого "скіна" тобі подобається найбільше?</p>
+            <p>2. Що б ти запитав у однолітка з іншого континенту?</p>
+            <button class="btn" onclick="location.reload()">ПРОЙТИ ЩЕ РАЗ 🔄</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    // Логіка Хмарочоса
-    const totalWords = 9;
+    function nav(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 's3') startQuiz();
+    }
+
+    // Sortable Logic
     const lists = document.querySelectorAll('.sortable-list');
     lists.forEach(list => {
         new Sortable(list, {
-            group: 'races',
-            animation: 200,
+            group: 'races', animation: 200,
             onAdd: (evt) => {
-                const item = evt.item;
-                const targetId = evt.to.id;
-                const correctType = item.getAttribute('data-type');
-                if (targetId === 'wordPool') { item.classList.remove('correct', 'wrong'); }
-                else if (targetId === correctType) { item.classList.add('correct'); item.classList.remove('wrong'); }
-                else { item.classList.add('wrong'); item.classList.remove('correct'); }
-                
-                if (document.querySelectorAll('.correct').length === totalWords) {
-                    setTimeout(() => { document.getElementById('win-modal').style.display = 'flex'; }, 500);
+                const item = evt.item; const target = evt.to.id; const type = item.dataset.type;
+                if(target === type || (type === 'all' && target === 'all')) {
+                    item.classList.add('correct'); item.classList.remove('wrong');
+                } else if(target !== 'wordPool') {
+                    item.classList.add('wrong'); item.classList.remove('correct');
                 }
+                if(document.querySelectorAll('.correct').length === 9) document.getElementById('nextBtn').style.display='block';
             }
         });
     });
 
-    // Логіка Бліц-квесту
-    const quizData = [
-        { q: "Яка раса найкраще захищена від сонячної радіації?", a: ["Європеоїдна", "Негроїдна", "Монголоїдна"], c: 1 },
-        { q: "Що є спільним фундаментом для всіх людей?", a: ["Колір очей", "Мрії та творчість", "Форма носа"], c: 1 },
-        { q: "Навіщо європеоїдам вузький ніс?", a: ["Для краси", "Щоб зігрівати повітря", "Щоб краще бачити"], c: 1 },
-        { q: "Яка ознака захищає очі від пилу степів?", a: ["Довгі вії", "Епікантус", "Темний колір"], c: 1 }
+    // Quiz Logic
+    const quiz = [
+        {q: "Навіщо еволюція придумала меланін?", a: ["Для краси", "Захист від опіків сонця", "Щоб краще плавати"], c: 1},
+        {q: "Чому у жителів півночі вузький ніс?", a: ["Щоб гріти повітря", "Для кращого нюху", "Щоб менше дихати"], c: 0}
     ];
-
-    let currentQ = 0;
-
+    let curQ = 0;
     function startQuiz() {
-        document.getElementById('win-modal').style.display = 'none';
-        document.getElementById('game-1').classList.add('hidden');
-        document.getElementById('game-2').classList.remove('hidden');
-        renderQuiz();
-    }
-
-    function renderQuiz() {
-        const q = quizData[currentQ];
-        document.getElementById('quiz-q').innerText = q.q;
-        const optDiv = document.getElementById('quiz-options');
+        const q = quiz[curQ];
+        document.getElementById('q-text').innerText = q.q;
+        const optDiv = document.getElementById('q-options');
         optDiv.innerHTML = '';
-        document.getElementById('quiz-feedback').innerText = '';
-
         q.a.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'quiz-option';
-            btn.innerText = opt;
-            btn.onclick = () => checkQuiz(i);
-            optDiv.appendChild(btn);
+            const b = document.createElement('button');
+            b.className = 'quiz-option'; b.innerText = opt;
+            b.onclick = () => {
+                if(i === q.c) {
+                    b.style.background = '#10b981'; curQ++;
+                    setTimeout(() => curQ < quiz.length ? startQuiz() : nav('s4'), 1000);
+                } else { b.style.background = '#ef4444'; }
+            };
+            optDiv.appendChild(b);
         });
     }
-
-    function checkQuiz(idx) {
-        const btns = document.querySelectorAll('.quiz-option');
-        if (idx === quizData[currentQ].c) {
-            btns[idx].style.background = '#10b981';
-            document.getElementById('quiz-feedback').innerText = "Правильно! 🌟";
-            setTimeout(() => {
-                currentQ++;
-                if (currentQ < quizData.length) renderQuiz();
-                else {
-                    document.getElementById('quiz-q').innerText = "Квест пройдено! Ти справжній майстер географії! 🌍";
-                    document.getElementById('quiz-options').innerHTML = '';
-                }
-            }, 1500);
-        } else {
-            btns[idx].style.background = '#ef4444';
-            document.getElementById('quiz-feedback').innerText = "Спробуй ще раз! 🤔";
-            if (navigator.vibrate) navigator.vibrate(200);
-        }
-    }
 </script>
-
 </body>
 </html>
